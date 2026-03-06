@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>בנימין וולוך | פיתוח אתרים ומערכות חכמות</title>
+    <meta name="description" content="בנימין וולוך - פיתוח ועיצוב אתרים ממירים, דפי נחיתה ומערכות ניהול חכמות לעסקים.">
+    
+    <!-- Tailwind CSS & Lucide Icons -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700;800&display=swap');
+
+        :root {
+            --primary: #2563eb; /* Blue 600 */
+            --secondary: #4f46e5; /* Indigo 600 */
+            --accent: #f59e0b; /* Amber 500 */
+            --bg-light: #f8fafc; /* Slate 50 */
+        }
+
+        body {
+            font-family: 'Assistant', sans-serif;
+            background-color: var(--bg-light);
+            color: #0f172a; /* Slate 900 */
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* Text & Background Gradients */
+        .text-gradient {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .bg-gradient-custom {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+        }
+
+        /* Soft abstract background blobs */
+        .blob {
+            position: absolute;
+            filter: blur(100px);
+            z-index: -1;
+            opacity: 0.4;
+            border-radius: 50%;
+        }
+
+        /* Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Project Cards */
+        .project-card {
+            transition: all 0.4s ease;
+        }
+        .project-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px -10px rgba(37, 99, 235, 0.15);
+        }
+        .project-img-wrapper {
+            overflow: hidden;
+        }
+        .project-img-wrapper img {
+            transition: transform 0.6s ease;
+        }
+        .project-card:hover .project-img-wrapper img {
+            transform: scale(1.05);
+        }
+
+        /* WhatsApp Float */
+        #whatsapp-float {
+            position: fixed;
+            bottom: 24px;
+            left: 24px;
+            z-index: 50;
+            background: #25D366;
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 25px rgba(37, 211, 102, 0.3);
+            transition: transform 0.3s ease;
+            animation: pulse-green 2s infinite;
+        }
+        #whatsapp-float:hover {
+            transform: scale(1.1) rotate(-5deg);
+        }
+        @keyframes pulse-green {
+            0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+        }
+
+        /* Glass Navbar */
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        /* Mobile Menu */
+        #mobile-menu {
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .menu-open {
+            transform: translateX(0) !important;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-blue-200 selection:text-blue-900">
+
+    <!-- Background Blobs for light theme -->
+    <div class="blob bg-blue-200 w-96 h-96 top-[-10%] right-[-10%] md:w-[600px] md:h-[600px]"></div>
+    <div class="blob bg-indigo-200 w-96 h-96 bottom-[20%] left-[-10%] md:w-[500px] md:h-[500px]"></div>
+
+    <!-- WhatsApp Button -->
+    <a href="https://wa.me/972586913800?text=היי%20בנימין,%20ראיתי%20את%20תיק%20העבודות%20שלך.%20אשמח%20לשוחח%20על%20בניית%20אתר!" target="_blank" id="whatsapp-float" aria-label="שלח הודעה בוואטסאפ">
+        <i data-lucide="message-circle" class="w-8 h-8"></i>
+    </a>
+
+    <!-- Navbar -->
+    <nav class="fixed w-full z-50 glass-nav transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex justify-between items-center">
+            <!-- Logo -->
+            <div class="font-extrabold text-2xl tracking-tight text-slate-800 flex items-center gap-3 relative z-[60]">
+                <div class="w-10 h-10 rounded-xl bg-gradient-custom flex items-center justify-center shadow-lg shadow-blue-500/20 text-white">
+                    <span class="text-sm font-bold">BV</span>
+                </div>
+                בנימין וולוך
+            </div>
+
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex items-center gap-8 text-base font-bold text-slate-600">
+                <a href="#projects" class="hover:text-blue-600 transition-colors">תיק עבודות</a>
+                <a href="#services" class="hover:text-blue-600 transition-colors">המומחיות שלי</a>
+                <a href="#contact" class="hover:text-blue-600 transition-colors">צור קשר</a>
+                
+                <a href="tel:0586913800" class="flex items-center gap-2 text-white bg-slate-900 px-6 py-2.5 rounded-full hover:bg-blue-600 transition shadow-md hover:shadow-lg">
+                    <i data-lucide="phone" class="w-4 h-4"></i>
+                    058-6913800
+                </a>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button onclick="toggleMenu()" class="md:hidden p-2 text-slate-800 relative z-[60] bg-white rounded-lg shadow-sm border border-slate-100" aria-label="תפריט">
+                <i data-lucide="menu" id="menu-icon" class="w-6 h-6"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Fullscreen Menu -->
+    <div id="mobile-menu" class="fixed inset-0 bg-white/95 backdrop-blur-xl z-50 transform translate-x-full md:hidden flex flex-col justify-center items-center gap-8 text-2xl font-bold">
+        <a href="#projects" onclick="toggleMenu()" class="text-slate-800 hover:text-blue-600">תיק עבודות</a>
+        <a href="#services" onclick="toggleMenu()" class="text-slate-800 hover:text-blue-600">המומחיות שלי</a>
+        <a href="#contact" onclick="toggleMenu()" class="text-slate-800 hover:text-blue-600">צור קשר</a>
+        <a href="tel:0586913800" onclick="toggleMenu()" class="mt-4 flex items-center gap-3 bg-gradient-custom text-white px-8 py-4 rounded-full shadow-lg">
+            <i data-lucide="phone-call" class="w-6 h-6"></i> חייגו עכשיו
+        </a>
+    </div>
+
+    <!-- Hero Section -->
+    <header class="relative pt-32 pb-16 md:pt-48 md:pb-32 px-4 sm:px-6 text-center min-h-[85vh] flex flex-col justify-center items-center">
+        <!-- Badge -->
+        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 border border-blue-100 text-blue-700 text-sm font-bold mb-8 shadow-sm">
+            <span class="relative flex h-2.5 w-2.5">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-blue-500"></span>
+            </span>
+            פנוי לפרויקטים חדשים
+        </div>
+        
+        <!-- Headline -->
+        <h1 class="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-extrabold mb-6 leading-tight text-slate-900 tracking-tight">
+            לא סתם אתרים יפים,<br>
+            <span class="text-gradient">מערכות שמביאות תוצאות.</span>
+        </h1>
+        
+        <!-- Subheadline -->
+        <p class="text-lg md:text-2xl text-slate-600 max-w-3xl mx-auto mb-10 font-normal leading-relaxed px-2">
+            אני בונה דפי נחיתה, קטלוגים ומערכות ניהול מותאמות אישית שמיועדות לדבר אחד: <strong class="text-slate-900 font-bold">להפוך גולשים ללקוחות ולחסוך לכם זמן ניהול.</strong>
+        </p>
+        
+        <!-- CTA Buttons -->
+        <div class="flex flex-col sm:flex-row gap-4 justify-center w-full sm:w-auto px-4">
+            <a href="#projects" class="bg-gradient-custom text-white font-bold text-lg px-8 py-4 rounded-full shadow-xl shadow-blue-500/20 hover:shadow-blue-500/40 hover:-translate-y-1 transition-all flex items-center justify-center gap-2 w-full sm:w-auto">
+                צפו בעבודות שלי <i data-lucide="arrow-down" class="w-5 h-5"></i>
+            </a>
+            <a href="https://wa.me/972586913800" target="_blank" class="bg-white text-slate-800 font-bold text-lg px-8 py-4 rounded-full border border-slate-200 shadow-sm hover:bg-slate-50 hover:-translate-y-1 transition-all flex items-center justify-center gap-2 w-full sm:w-auto">
+                בואו נדבר בוואטסאפ
+            </a>
+        </div>
+    </header>
+
+    <!-- Expertise Section -->
+    <section id="services" class="py-20 px-4 sm:px-6 relative z-10 bg-white border-y border-slate-100">
+        <div class="max-w-7xl mx-auto reveal">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-5xl font-extrabold mb-4 text-slate-900">היתרון <span class="text-gradient">שלי</span></h2>
+                <p class="text-slate-500 text-lg md:text-xl">מה הופך את האתרים שלי להרבה יותר מסתם כרטיס ביקור דיגיטלי?</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+                <!-- Card 1 -->
+                <div class="bg-slate-50 p-8 rounded-[2rem] border border-slate-100 hover:border-blue-200 transition-colors shadow-sm hover:shadow-md">
+                    <div class="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-blue-600 mb-6 shadow-sm border border-slate-100">
+                        <i data-lucide="smartphone" class="w-7 h-7"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-slate-900">ממוקד חווית משתמש ומובייל</h3>
+                    <p class="text-slate-600 leading-relaxed">הרוב המוחלט של הגולשים מגיעים מהנייד. אני בונה ממשקים (UI/UX) חלקים, אנימציות נעימות וכפתורי הנעה לפעולה שבולטים בדיוק בזמן הנכון.</p>
+                </div>
+                
+                <!-- Card 2 -->
+                <div class="bg-slate-50 p-8 rounded-[2rem] border border-slate-100 hover:border-indigo-200 transition-colors shadow-sm hover:shadow-md">
+                    <div class="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-indigo-600 mb-6 shadow-sm border border-slate-100">
+                        <i data-lucide="database" class="w-7 h-7"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-slate-900">מערכות ניהול ופאנל אדמין</h3>
+                    <p class="text-slate-600 leading-relaxed">אני לא משאיר אתכם רק עם חזית יפה. אני מחבר את האתר למסדי נתונים (כמו Google Sheets) ובונה עבורכם אזור אישי ומאובטח לניהול מלאי והזמנות.</p>
+                </div>
+                
+                <!-- Card 3 -->
+                <div class="bg-slate-50 p-8 rounded-[2rem] border border-slate-100 hover:border-blue-200 transition-colors shadow-sm hover:shadow-md">
+                    <div class="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-blue-600 mb-6 shadow-sm border border-slate-100">
+                        <i data-lucide="zap" class="w-7 h-7"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-slate-900">קוד נקי וביצועי שיא</h3>
+                    <p class="text-slate-600 leading-relaxed">אתר איטי מאבד לקוחות. האתרים שלי מפותחים בקוד מותאם אישית (ללא תבניות כבדות), מה שמבטיח טעינה בשברירי שניה וקידום מעולה בגוגל (SEO).</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Portfolio -->
+    <section id="projects" class="py-20 md:py-32 px-4 sm:px-6 relative z-10">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center md:text-right mb-12 md:mb-16 reveal">
+                <h2 class="text-3xl md:text-5xl font-extrabold mb-4 text-slate-900">הפרויקטים <span class="text-gradient">שלי</span></h2>
+                <p class="text-slate-500 text-lg md:text-xl">דוגמאות נבחרות לאתרים ומערכות שפיתחתי לאחרונה.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
+                
+                <!-- Project 1: Gmach -->
+                <a href="https://gmach-eruim-nerya.vercel.app/" target="_blank" class="project-card group bg-white rounded-[2.5rem] p-4 md:p-6 border border-slate-100 shadow-xl shadow-slate-200/50 block reveal">
+                    <div class="project-img-wrapper rounded-[1.5rem] aspect-[4/3] md:aspect-[16/10] bg-slate-100 mb-6 border border-slate-100 relative">
+                        <!-- החלף בתמונת צילום מסך של האתר שלך -->
+                        <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=800&auto=format&fit=crop" alt="גמ''ח אירועים נריה" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-blue-900/0 group-hover:bg-blue-900/10 transition-colors flex items-center justify-center">
+                            <span class="bg-white text-blue-600 font-bold px-6 py-3 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all">צפייה באתר <i data-lucide="external-link" class="inline w-4 h-4 mr-1"></i></span>
+                        </div>
+                    </div>
+                    <div class="px-2 md:px-4 pb-2">
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="bg-blue-50 text-blue-700 text-xs font-bold px-3 py-1 rounded-full border border-blue-100">מערכת השכרת ציוד</span>
+                            <span class="bg-indigo-50 text-indigo-700 text-xs font-bold px-3 py-1 rounded-full border border-indigo-100">פאנל ניהול ומלאי</span>
+                        </div>
+                        <h3 class="text-2xl font-extrabold text-slate-900 mb-2">גמ"ח אירועים נריה</h3>
+                        <p class="text-slate-500 leading-relaxed">מערכת קטלוג מלאה כולל עגלת קניות, בדיקת זמינות תאריכים חכמה ופאנל אדמין מוגן בסיסמה לניהול מלאי פריטים והיסטוריית הזמנות.</p>
+                    </div>
+                </a>
+
+                <!-- Project 2: Tal Israel -->
+                <a href="https://tal-israel.netlify.app/" target="_blank" class="project-card group bg-white rounded-[2.5rem] p-4 md:p-6 border border-slate-100 shadow-xl shadow-slate-200/50 block reveal lg:mt-12">
+                    <div class="project-img-wrapper rounded-[1.5rem] aspect-[4/3] md:aspect-[16/10] bg-slate-100 mb-6 border border-slate-100 relative">
+                        <!-- החלף בתמונת צילום מסך של האתר שלך -->
+                        <img src="https://images.unsplash.com/photo-1540518614846-7eded433c457?q=80&w=800&auto=format&fit=crop" alt="בטל ישראל אירוח" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-blue-900/0 group-hover:bg-blue-900/10 transition-colors flex items-center justify-center">
+                            <span class="bg-white text-blue-600 font-bold px-6 py-3 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all">צפייה באתר <i data-lucide="external-link" class="inline w-4 h-4 mr-1"></i></span>
+                        </div>
+                    </div>
+                    <div class="px-2 md:px-4 pb-2">
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="bg-blue-50 text-blue-700 text-xs font-bold px-3 py-1 rounded-full border border-blue-100">הזמנת תאריכים</span>
+                            <span class="bg-indigo-50 text-indigo-700 text-xs font-bold px-3 py-1 rounded-full border border-indigo-100">מערכת המלצות</span>
+                        </div>
+                        <h3 class="text-2xl font-extrabold text-slate-900 mb-2">מתחם האירוח "בטל ישראל"</h3>
+                        <p class="text-slate-500 leading-relaxed">אתר תדמית ובוקינג למתחם אירוח בירושלים. כולל תצוגת לוח שנה של תאריכים פנויים/תפוסים, מודל הזמנה ומערכת המלצות דינאמית הנשלטת ע"י המנהל.</p>
+                    </div>
+                </a>
+
+                <!-- Project 3: Sunset Bar -->
+                <a href="https://sunset-bar.vercel.app/" target="_blank" class="project-card group bg-white rounded-[2.5rem] p-4 md:p-6 border border-slate-100 shadow-xl shadow-slate-200/50 block reveal">
+                    <div class="project-img-wrapper rounded-[1.5rem] aspect-[4/3] md:aspect-[16/10] bg-slate-100 mb-6 border border-slate-100 relative">
+                        <!-- החלף בתמונת צילום מסך של האתר שלך -->
+                        <img src="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?q=80&w=800&auto=format&fit=crop" alt="Sunset Bar" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-blue-900/0 group-hover:bg-blue-900/10 transition-colors flex items-center justify-center">
+                            <span class="bg-white text-blue-600 font-bold px-6 py-3 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all">צפייה באתר <i data-lucide="external-link" class="inline w-4 h-4 mr-1"></i></span>
+                        </div>
+                    </div>
+                    <div class="px-2 md:px-4 pb-2">
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="bg-blue-50 text-blue-700 text-xs font-bold px-3 py-1 rounded-full border border-blue-100">עיצוב צעיר ודינאמי</span>
+                            <span class="bg-indigo-50 text-indigo-700 text-xs font-bold px-3 py-1 rounded-full border border-indigo-100">איסוף לידים אוטומטי</span>
+                        </div>
+                        <h3 class="text-2xl font-extrabold text-slate-900 mb-2">Sunset Bar - בר קוקטיילים</h3>
+                        <p class="text-slate-500 leading-relaxed">דף נחיתה יוקרתי וממיר לאירועי אלכוהול. מחובר ישירות ל-Google Sheets לאיסוף הצעות מחיר מסודר ולניהול הלידים מצד הלקוח בעזרת ממשק אדמין.</p>
+                    </div>
+                </a>
+
+                <!-- Project 4: Young Israel -->
+                <a href="https://the-young-israel-synagogue.vercel.app/" target="_blank" class="project-card group bg-white rounded-[2.5rem] p-4 md:p-6 border border-slate-100 shadow-xl shadow-slate-200/50 block reveal lg:mt-12">
+                    <div class="project-img-wrapper rounded-[1.5rem] aspect-[4/3] md:aspect-[16/10] bg-slate-100 mb-6 border border-slate-100 relative">
+                        <!-- החלף בתמונת צילום מסך של האתר שלך -->
+                        <img src="https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?q=80&w=800&auto=format&fit=crop" alt="אולם אירועים ישראל הצעיר" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-blue-900/0 group-hover:bg-blue-900/10 transition-colors flex items-center justify-center">
+                            <span class="bg-white text-blue-600 font-bold px-6 py-3 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all">צפייה באתר <i data-lucide="external-link" class="inline w-4 h-4 mr-1"></i></span>
+                        </div>
+                    </div>
+                    <div class="px-2 md:px-4 pb-2">
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="bg-blue-50 text-blue-700 text-xs font-bold px-3 py-1 rounded-full border border-blue-100">גלריה אינטראקטיבית</span>
+                            <span class="bg-indigo-50 text-indigo-700 text-xs font-bold px-3 py-1 rounded-full border border-indigo-100">שילוב יומן Google</span>
+                        </div>
+                        <h3 class="text-2xl font-extrabold text-slate-900 mb-2">אולם אירועים - ישראל הצעיר</h3>
+                        <p class="text-slate-500 leading-relaxed">אתר תדמית מסודר להצגת האולם. כולל מחירון, נהלים, גלריית תמונות, אינטגרציה מלאה ליומן גוגל להצגת זמינות, וטופס הזמנה חכם לוואטסאפ.</p>
+                    </div>
+                </a>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Call To Action / Contact -->
+    <section id="contact" class="py-20 md:py-32 px-4 sm:px-6 relative overflow-hidden bg-white border-t border-slate-100">
+        <div class="max-w-4xl mx-auto text-center relative z-10 bg-slate-50 border border-slate-100 p-8 md:p-16 rounded-[2.5rem] md:rounded-[3rem] shadow-2xl reveal">
+            <h2 class="text-3xl md:text-5xl font-extrabold mb-6 text-slate-900">מוכנים לקחת את העסק שלכם <span class="text-gradient">לשלב הבא?</span></h2>
+            <p class="text-slate-600 text-lg md:text-xl mb-10 max-w-2xl mx-auto font-normal">
+                בין אם אתם צריכים דף נחיתה מהיר שמביא לידים, או מערכת מורכבת עם ניהול מלאי ובוקינג - אני כאן כדי לאפיין ולבנות את זה במדויק.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row gap-4 justify-center w-full sm:w-auto">
+                <a href="https://wa.me/972586913800" target="_blank" class="bg-gradient-custom text-white font-bold text-lg md:text-xl px-8 py-4 md:py-5 rounded-full hover:shadow-lg hover:shadow-blue-500/30 transition-all flex items-center justify-center gap-3 w-full sm:w-auto transform hover:-translate-y-1">
+                    <i data-lucide="message-circle" class="w-6 h-6"></i>
+                    שליחת הודעה בוואטסאפ
+                </a>
+                <a href="tel:0586913800" class="bg-white border-2 border-slate-200 text-slate-800 font-bold text-lg md:text-xl px-8 py-4 md:py-5 rounded-full hover:border-blue-500 hover:text-blue-600 transition-all flex items-center justify-center gap-3 w-full sm:w-auto">
+                    <i data-lucide="phone" class="w-5 h-5"></i>
+                    058-6913800
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 py-10 text-center border-t-4 border-blue-600">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="font-extrabold text-xl tracking-tight text-white flex items-center gap-2">
+                <div class="w-8 h-8 rounded bg-gradient-custom flex items-center justify-center text-white">
+                    <span class="text-[12px] font-bold">BV</span>
+                </div>
+                בנימין וולוך
+            </div>
+            <p class="text-slate-400 text-sm md:text-base font-medium">© כל הזכויות שמורות. נבנה בקוד מותאם אישית תוך שימוש בטכנולוגיות המתקדמות ביותר.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Initialize Icons
+        lucide.createIcons();
+
+        // Mobile Menu Toggle Logic
+        let isMenuOpen = false;
+        function toggleMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const icon = document.getElementById('menu-icon');
+            
+            isMenuOpen = !isMenuOpen;
+            
+            if (isMenuOpen) {
+                menu.classList.add('menu-open');
+                icon.setAttribute('data-lucide', 'x');
+                document.body.style.overflow = 'hidden'; // Prevent background scrolling
+            } else {
+                menu.classList.remove('menu-open');
+                icon.setAttribute('data-lucide', 'menu');
+                document.body.style.overflow = 'auto';
+            }
+            lucide.createIcons();
+        }
+
+        // Scroll Reveal Animation 
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach((el) => {
+            observer.observe(el);
+        });
+
+        // Sticky Navbar effect - Light theme specific
+        const nav = document.querySelector('nav');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 20) {
+                nav.classList.add('shadow-md');
+                nav.style.background = 'rgba(255, 255, 255, 0.95)';
+            } else {
+                nav.classList.remove('shadow-md');
+                nav.style.background = 'rgba(255, 255, 255, 0.85)';
+            }
+        });
+    </script>
+</body>
+</html>
